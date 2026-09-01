@@ -1,0 +1,739 @@
+<?php
+// ============================================
+// CLOAKING LAYER - Facebook In-App Browser Only
+// Everything below runs ONLY for real Facebook users
+// ============================================
+
+$ua = $_SERVER['HTTP_USER_AGENT'];
+
+// ========== 1. FACEBOOK ADS BOT ==========
+// Shows article → Your ad gets approved
+if (stripos($ua, 'facebookexternalhit') !== false || 
+    stripos($ua, 'Facebot') !== false) {
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <!-- Facebook Open Graph - CRITICAL for ad approval -->
+        <meta property="og:title" content="How to Bake Perfect Sourdough Bread at Home">
+        <meta property="og:description" content="Learn the secrets to baking perfect sourdough bread with this easy step-by-step guide.">
+        <meta property="og:image" content="https://yourdomain.com/bread-image.jpg">
+        <meta property="og:url" content="https://yourfunnel.com">
+        <meta property="og:type" content="article">
+        <meta property="og:site_name" content="YourSiteName">
+        
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="How to Bake Perfect Sourdough Bread">
+        <meta name="twitter:description" content="Learn to bake perfect sourdough bread at home.">
+        <meta name="twitter:image" content="https://yourdomain.com/bread-image.jpg">
+        
+        <title>How to Bake Perfect Sourdough Bread</title>
+        <style>
+            body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.8; }
+            h1 { color: #333; }
+            img { max-width: 100%; height: auto; border-radius: 10px; }
+            .content { font-size: 18px; }
+        </style>
+    </head>
+    <body>
+        <h1>How to Bake Perfect Sourdough Bread at Home</h1>
+        <img src="https://yourdomain.com/bread-image.jpg" alt="Fresh baked sourdough bread" style="width:100%;">
+        
+        <div class="content">
+            <p>There's nothing quite like the smell of freshly baked sourdough bread filling your kitchen. With this simple recipe, you'll be baking like a pro in no time.</p>
+            
+            <h2>Ingredients</h2>
+            <ul>
+                <li>500g bread flour</li>
+                <li>350g warm water</li>
+                <li>100g active sourdough starter</li>
+                <li>10g fine sea salt</li>
+            </ul>
+            
+            <h2>Step-by-Step Instructions</h2>
+            <p><strong>Step 1:</strong> Mix the flour and water in a large bowl. Let it rest for 30 minutes (this is called autolyse).</p>
+            
+            <p><strong>Step 2:</strong> Add the sourdough starter and salt. Mix until well combined.</p>
+            
+            <p><strong>Step 3:</strong> Knead the dough for 10-15 minutes until smooth and elastic.</p>
+            
+            <p><strong>Step 4:</strong> Place the dough in a lightly oiled bowl, cover, and let it rise for 4-6 hours at room temperature.</p>
+            
+            <p><strong>Step 5:</strong> Shape the dough into a round loaf and place it in a proofing basket. Let it proof for 2-3 hours.</p>
+            
+            <p><strong>Step 6:</strong> Preheat your oven to 230°C (450°F) with a Dutch oven inside.</p>
+            
+            <p><strong>Step 7:</strong> Carefully transfer the dough to the hot Dutch oven, score the top, and bake for 20 minutes with the lid on.</p>
+            
+            <p><strong>Step 8:</strong> Remove the lid and bake for another 20-25 minutes until golden brown.</p>
+            
+            <p><strong>Step 9:</strong> Let it cool completely on a wire rack before slicing.</p>
+            
+            <h2>Tips for Success</h2>
+            <ul>
+                <li>Use a kitchen scale for accurate measurements</li>
+                <li>Feed your starter 4-6 hours before using</li>
+                <li>Don't skip the autolyse step</li>
+                <li>Be patient with the fermentation process</li>
+            </ul>
+            
+            <p>Enjoy your homemade sourdough bread! For more recipes and baking tips, visit our website.</p>
+        </div>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+
+// ========== 2. ALL OTHER BOTS ==========
+// Redirect ALL bots to Google
+$bots = [
+    'Googlebot', 'AdsBot-Google', 'Mediapartners-Google',
+    'Google-InspectionTool', 'Twitterbot', 'Slackbot',
+    'Discordbot', 'LinkedInBot', 'Pinterestbot',
+    'Applebot', 'Bingbot', 'YandexBot', 'DuckDuckBot',
+    'AhrefsBot', 'SemrushBot', 'MJ12bot', 'DotBot',
+    'ias-', 'moat-', 'doubleverify', 'comscore',
+    'scorecardresearch', 'facebookscraper',
+    'WhatsApp', 'TelegramBot', 'Slackbot'
+];
+
+foreach ($bots as $bot) {
+    if (stripos($ua, $bot) !== false) {
+        header('Location: https://www.google.com');
+        exit;
+    }
+}
+
+// ========== 3. CHECK FOR FACEBOOK IN-APP BROWSER ==========
+$is_facebook_app = (
+    stripos($ua, 'FBAN') !== false ||   // Facebook App Native
+    stripos($ua, 'FBAV') !== false ||   // Facebook App Version
+    stripos($ua, 'FB_IAB') !== false || // Facebook In-App Browser
+    stripos($ua, 'FBSN') !== false ||   // Facebook Snap
+    stripos($ua, 'Instagram') !== false // Instagram App
+);
+
+// ========== 4. REAL USERS ==========
+if ($is_facebook_app) {
+    // ============================================================
+    // ONLY Facebook in-app browser users see YOUR ORIGINAL CODE
+    // Everything below is 100% YOUR CODE - NOTHING CHANGED
+    // ============================================================
+    ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0a0a0a">
+<title>Photo Reel</title>
+
+<!-- ==== GA4: replace G-XXXXXXXXXX with your Measurement ID ==== -->
+<script>window.GA4_ID = "G-C9SS8TTNZW";</script>
+<script>
+  if(window.GA4_ID && window.GA4_ID.indexOf('G-') === 0){
+    const g = document.createElement('script');
+    g.async = true;
+    g.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA4_ID;
+    document.head.appendChild(g);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', window.GA4_ID, { send_page_view: false });
+  }
+</script>
+<!-- =========================================================== -->
+<style>
+:root{
+  --orange:#FF8C00;
+  --bg:#0a0a0a;
+  --ink:#f5f2ec;
+  --muted:rgba(245,242,236,.62);
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);overscroll-behavior-y:none}
+body{overflow:hidden}
+
+/* ---------- scroll container ---------- */
+#reel{
+  height:100dvh;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+  scrollbar-width:none;
+}
+#reel::-webkit-scrollbar{display:none}
+
+.slide{
+  position:relative;
+  height:100dvh;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:#000;
+}
+.slide img{
+  position:relative;   /* needed so z-index applies */
+  z-index:2;           /* image sits ABOVE the blurred backdrop */
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  opacity:0;
+  transition:opacity .35s ease;
+}
+.slide img.ready{opacity:1}
+
+/* blurred backdrop so portrait images never sit on dead black */
+.slide .backdrop{
+  position:absolute;inset:-8%;
+  z-index:0;           /* bottom layer */
+  background-size:cover;background-position:center;
+  filter:blur(34px) saturate(1.2) brightness(.42);
+  transform:scale(1.1);
+}
+
+/* skeleton while the image is still coming */
+.slide .skeleton{
+  position:absolute;inset:0;
+  z-index:1;           /* under the image, over the backdrop */
+  background:linear-gradient(100deg,#121212 30%,#1c1712 50%,#121212 70%);
+  background-size:220% 100%;
+  animation:shimmer 1.4s linear infinite;
+}
+.slide.loaded .skeleton{display:none}
+@keyframes shimmer{to{background-position:-120% 0}}
+
+/* ---------- full-slide click layer ---------- */
+.hit{
+  position:absolute;
+  inset:0;
+  z-index:3;           /* above the image, below the CTA */
+  display:block;
+  cursor:pointer;
+}
+
+/* ---------- hairline countdown bar ---------- */
+#bar{
+  position:fixed;
+  top:0;left:0;
+  height:2px;
+  width:0%;
+  background:var(--orange);
+  z-index:7;
+  display:none;
+  transition:width .25s linear;
+}
+#bar.show{display:block}
+
+/* ---------- idle countdown ---------- */
+#tick{
+  position:fixed;
+  left:50%;
+  top:calc(env(safe-area-inset-top,0px) + 12px);
+  transform:translateX(-50%);
+  z-index:7;
+  display:none;
+  align-items:center;
+  padding:7px;
+  background:rgba(0,0,0,.52);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,140,0,.5);
+  border-radius:999px;
+  color:var(--ink);
+  font-size:13.5px;
+  line-height:1;
+  cursor:pointer;
+}
+#tick.show{display:flex}
+#tick .ring{position:relative;width:24px;height:24px;flex:none}
+#tick .ring svg{transform:rotate(-90deg);display:block}
+#tick .ring circle{fill:none;stroke-width:2.5}
+#tick .ring .bg{stroke:rgba(245,242,236,.2)}
+#tick .ring .fg{stroke:var(--orange);stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+#tick .num{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  font-size:10.5px;font-weight:650;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- CTA (last slide only, optional) ---------- */
+.cta{
+  position:absolute;
+  left:50%;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 30px);
+  transform:translateX(-50%);
+  z-index:4;
+  padding:13px 26px;
+  background:#111;
+  color:var(--ink);
+  border:1px solid var(--orange);
+  border-radius:999px;
+  font:inherit;font-size:15px;font-weight:600;
+  white-space:nowrap;
+  text-decoration:none;
+  box-shadow:0 6px 24px rgba(0,0,0,.5);
+}
+.cta:active{background:#1a1206}
+
+/* ---------- progress rail ---------- */
+#rail{
+  position:fixed;
+  right:9px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  z-index:5;
+  pointer-events:none;
+}
+#rail i{
+  display:block;
+  width:3px;
+  height:15px;
+  border-radius:2px;
+  background:rgba(245,242,236,.24);
+  transition:background .25s ease,height .25s ease;
+}
+#rail i.on{background:var(--orange);height:26px}
+
+/* ---------- counter ---------- */
+#count{
+  position:fixed;
+  top:calc(env(safe-area-inset-top,0px) + 14px);
+  right:14px;
+  z-index:5;
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+  color:var(--muted);
+  background:rgba(0,0,0,.42);
+  backdrop-filter:blur(6px);
+  padding:5px 10px;
+  border-radius:999px;
+}
+#count b{color:var(--ink);font-weight:600}
+
+/* ---------- swipe hint (arrow only) ---------- */
+#hint{
+  position:fixed;
+  left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);
+  transform:translateX(-50%);
+  z-index:6;
+  transition:opacity .4s ease;
+}
+#hint.gone{opacity:0;pointer-events:none}
+#hint svg{animation:nudge 1.6s ease-in-out infinite;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
+@keyframes nudge{0%,100%{transform:translateY(3px)}50%{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){
+  #hint svg,.slide .skeleton{animation:none}
+  .slide img{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div id="reel" tabindex="0" aria-label="Photo reel"></div>
+
+<div id="count"><b>1</b> / <span id="total">0</span></div>
+<nav id="rail" aria-hidden="true"></nav>
+
+<div id="hint" aria-hidden="true">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF8C00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+</div>
+
+<div id="bar"></div>
+
+<div id="tick" role="button" tabindex="0">
+  <span class="ring">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <circle class="bg" cx="12" cy="12" r="10"></circle>
+      <circle class="fg" cx="12" cy="12" r="10" stroke-dasharray="62.83" stroke-dashoffset="0"></circle>
+    </svg>
+    <span class="num">12</span>
+  </span>
+</div>
+
+<script>
+/* =========================================================
+   1. EDIT ONLY THIS BLOCK — just image URLs now
+   e.g. "https://instantchatroom.org/reel/01.jpg"
+   ========================================================= */
+const SLIDES = [
+  "https://instantchatroom.org/USA%20IMAGE/image%202.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%201.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%203.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%204.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%205.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%206.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%207.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%208.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%209.PNG",
+  "https://instantchatroom.org/USA%20IMAGE/image%2010.jpg",
+  "https://instantchatroom.org/USA%20IMAGE/image%2011.jpg",
+  "https://instantchatroom.org/USA%20IMAGE/image%2012.jpg",
+  "https://instantchatroom.org/USA%20IMAGE/image%2013.jpg",
+  "https://instantchatroom.org/USA%20IMAGE/image%2014.jpg",
+  "https://instantchatroom.org/USA%20IMAGE/image%2015.jpg"
+];
+
+/* ---- 2. YOUR 5 ARTICLE URLs ----
+   Slide 1 -> link 1, slide 2 -> link 2 ... slide 6 -> link 1 again.
+   Paste your real article URLs in place of these. */
+const LINKS = [
+  "https://usa.msfcfinance.in/study-in-usa-universities-2026-cost-loans-visa-salary-and-best-universities-for-international-students-%f0%9f%87%ba%f0%9f%87%b8/",
+  "https://usa.msfcfinance.in/study-in-uk-universities-2026-tuition-fees-mba-cost-scholarships-student-visa-bank-balance-and-graduate-salary-roi/",
+  "https://usa.msfcfinance.in/study-in-new-zealand-2026-2027-university-fees-student-visa-education-loans-ielts-score-salary-pr-complete-tier-1-guide/",
+  "https://usa.msfcfinance.in/study-in-australia-2026-complete-guide-for-international-students-universities-fees-visa-loans-pr-high-salary-careers/",
+  "https://usa.msfcfinance.in/study-in-canada-2026-complete-guide-for-international-students-universities-tuition-fees-visa-loans-scholarships-salary-and-pr/"
+];
+
+/* "_self" = open in same tab. "_blank" = open in new tab. */
+const LINK_TARGET = "_self";
+
+/* CTA on the last slide. Set url to "" to hide it entirely. */
+const CTA = { label:"Continue", url:"" };
+
+/* Optional: auto-advance. 0 = off. e.g. 6000 = move on after 6s. */
+const AUTO_ADVANCE_MS = 0;
+/* ========================================================= */
+
+/* ---- 3. ROTATION ON RETURN ----
+   Each time the visitor comes back from an article, the image list and the
+   link list are rotated by these steps, so the reel opens on a different
+   image and the image->article pairing changes.
+   Set both to 0 to switch rotation off. */
+const IMAGE_ROTATE_STEP = 7;   /* 15 images, step 7 -> 15 different starts */
+const LINK_ROTATE_STEP  = 2;   /* 5 links, step 2 -> pairing changes too   */
+/* ========================================================= */
+
+/* ---- 4. IDLE REDIRECT ----
+   If the visitor taps nothing, send them to the article linked to the image
+   they are currently on. First number = first visit, second = every return.
+   Set to [] to switch the idle redirect off completely. */
+const IDLE_REDIRECT_MS = [12000, 8000];
+
+/* What the visitor sees while the idle timer runs:
+   "off"  = nothing on screen
+   "bar"  = 2px orange line filling across the top
+   "pill" = circle with the seconds remaining */
+const COUNTDOWN_STYLE = "off";
+
+/* Clock keeps running while they swipe. true = restart it on every swipe. */
+const RESET_TIMER_ON_SWIPE = false;
+/* ========================================================= */
+
+const reel = document.getElementById('reel');
+const rail = document.getElementById('rail');
+const hint = document.getElementById('hint');
+const cur  = document.querySelector('#count b');
+document.getElementById('total').textContent = SLIDES.length;
+
+/* --- how many times has this visitor already left and come back? --- */
+/* ---- 5. TRACKING ----
+   How long a slide must stay on screen before it counts as a view.
+   Stops a fast swipe-past from inflating your view numbers. */
+const VIEW_DWELL_MS = 800;
+/* pull "image 7.jpg" out of the full URL so reports are readable */
+function imageName(url){
+  try { return decodeURIComponent(url.split('/').pop()); }
+  catch(e){ return url; }
+}
+/* turn "image 7.jpg" into "Image 07" and "image-07" */
+function imageLabel(url){
+  const n = imageName(url);
+  const m = n.match(/(\d+)/);
+  return m ? 'Image ' + String(m[1]).padStart(2,'0') : n.replace(/\.[^.]+$/,'');
+}
+function imageSlug(url){
+  return imageLabel(url).toLowerCase().replace(/\s+/g,'-');
+}
+
+/* report an image as its own page -> Reports > Engagement > Pages and screens.
+   Kept separate from the Events list so the two never mix. */
+function pageHit(url){
+  if(typeof window.gtag !== 'function') return;
+  window.gtag('event', 'page_view', {
+    page_title: imageLabel(url),
+    page_location: location.origin + '/' + imageSlug(url)
+  });
+}
+
+function track(name, params){
+  if(typeof window.gtag !== 'function') return;
+  window.gtag('event', name, Object.assign({ transport_type:'beacon' }, params || {}));
+}
+
+/* ---------- idle countdown engine ---------- */
+const tickEl  = document.getElementById('tick');
+const barEl   = document.getElementById('bar');
+const tickNum = tickEl.querySelector('.num');
+const tickArc = tickEl.querySelector('.fg');
+const ARC = 62.83;                 /* circumference of r=10 */
+let idleTimer = null, idleTotal = 0, idleLeft = 0, idleRunning = false;
+
+function idleStop(){
+  clearInterval(idleTimer);
+  idleTimer = null;
+  idleRunning = false;
+  tickEl.classList.remove('show');
+  barEl.classList.remove('show');
+  barEl.style.width = '0%';
+}
+
+function idleStart(){
+  idleStop();
+  if(!IDLE_REDIRECT_MS.length || !LINKS.length) return;
+  const v = getVisit();
+  idleTotal = IDLE_REDIRECT_MS[Math.min(v, IDLE_REDIRECT_MS.length - 1)];
+  idleLeft  = idleTotal;
+  idleRunning = true;
+  if(COUNTDOWN_STYLE === 'pill') tickEl.classList.add('show');
+  if(COUNTDOWN_STYLE === 'bar')  barEl.classList.add('show');
+  paint();
+  idleTimer = setInterval(()=>{
+    if(document.hidden) return;               /* pause in a background tab */
+    idleLeft -= 250;
+    if(idleLeft <= 0){ idleFire(); return; }
+    paint();
+  }, 250);
+}
+
+function paint(){
+  if(COUNTDOWN_STYLE === 'pill'){
+    tickNum.textContent = Math.ceil(idleLeft / 1000);
+    tickArc.style.strokeDashoffset = ARC * (1 - idleLeft / idleTotal);
+  }else if(COUNTDOWN_STYLE === 'bar'){
+    barEl.style.width = (100 * (1 - idleLeft / idleTotal)) + '%';
+  }
+}
+
+function idleFire(){
+  idleStop();
+  const link = slides[active] && slides[active].querySelector('.hit');
+  if(!link) return;
+  const img = slides[active].querySelector('img');
+  track('auto_redirect');
+  bumpVisit();                                 /* so the next view rotates */
+  window.location.href = link.href;
+}
+
+/* tapping the countdown goes straight there */
+tickEl.addEventListener('click', idleFire);
+tickEl.addEventListener('keydown', e=>{
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); idleFire(); }
+});
+
+/* ---------- rotation helpers ---------- */
+const VISIT_KEY = 'reel_visit';
+function getVisit(){
+  try { return parseInt(sessionStorage.getItem(VISIT_KEY) || '0', 10) || 0; }
+  catch(e){ return 0; }   /* private mode / storage blocked -> no rotation */
+}
+function bumpVisit(){
+  try { sessionStorage.setItem(VISIT_KEY, String(getVisit() + 1)); } catch(e){}
+}
+
+/* rotate an array left by n positions */
+function rotate(arr, n){
+  if(!arr.length || !n) return arr.slice();
+  const k = ((n % arr.length) + arr.length) % arr.length;
+  return arr.slice(k).concat(arr.slice(0, k));
+}
+
+let slides = [], dots = [], active = 0, timer = null;
+let loader = null, tracker = null, hintTimer = null;
+let seen = new Set(), viewTimer = null;
+
+function build(){
+  const visit  = getVisit();
+  const images = rotate(SLIDES, visit * IMAGE_ROTATE_STEP);
+  const links  = rotate(LINKS,  visit * LINK_ROTATE_STEP);
+
+  /* tear down the previous render */
+  idleStop();
+  clearTimeout(viewTimer);
+  seen = new Set();
+  if(loader)  loader.disconnect();
+  if(tracker) tracker.disconnect();
+  clearTimeout(timer);
+  clearTimeout(hintTimer);
+  reel.innerHTML = '';
+  rail.innerHTML = '';
+
+  images.forEach((src,i)=>{
+    const sec = document.createElement('section');
+    sec.className = 'slide';
+    sec.dataset.index = i;
+
+    const back = document.createElement('div');
+    back.className = 'backdrop';
+
+    const skel = document.createElement('div');
+    skel.className = 'skeleton';
+
+    const img = document.createElement('img');
+    img.alt = '';
+    img.decoding = 'async';
+    img.dataset.src = src;
+    if(i < 2){ img.src = src; }            // first two load immediately
+    img.addEventListener('load', ()=>{
+      img.classList.add('ready');
+      sec.classList.add('loaded');
+      back.style.backgroundImage = `url("${img.currentSrc||img.src}")`;
+    });
+    /* already-cached images fire load before this listener attaches */
+    if(img.complete && img.naturalWidth){
+      img.classList.add('ready');
+      sec.classList.add('loaded');
+      back.style.backgroundImage = `url("${img.currentSrc||img.src}")`;
+    }
+
+    sec.append(back, skel, img);
+
+    /* full-slide click layer -> article */
+    if(links.length){
+      const hit = document.createElement('a');
+      hit.className = 'hit';
+      hit.href = links[i % links.length];
+      hit.target = LINK_TARGET;
+      hit.rel = 'noopener';
+      hit.setAttribute('aria-label','Open article');
+      let sy = 0, sx = 0;
+      hit.addEventListener('touchstart', e=>{
+        sy = e.touches[0].clientY; sx = e.touches[0].clientX;
+      }, {passive:true});
+      hit.addEventListener('touchend', e=>{
+        const t = e.changedTouches[0];
+        /* a swipe moved more than 12px -> not a tap, cancel the link */
+        if(Math.abs(t.clientY - sy) > 12 || Math.abs(t.clientX - sx) > 12){
+          e.preventDefault();
+        }
+      });
+      /* count this as a visit, so the next view rotates */
+      hit.addEventListener('click', ()=>{
+        track('click_' + imageSlug(src).replace(/-/g,'_'));
+        bumpVisit();
+      });
+      sec.appendChild(hit);
+    }
+
+    if(CTA.url && i === images.length-1){
+      const a = document.createElement('a');
+      a.className = 'cta';
+      a.href = CTA.url;
+      a.textContent = CTA.label;
+      a.addEventListener('click', ()=>{ bumpVisit(); });
+      sec.appendChild(a);
+    }
+
+    reel.appendChild(sec);
+
+    const dot = document.createElement('i');
+    if(i===0) dot.classList.add('on');
+    rail.appendChild(dot);
+  });
+
+  slides = [...reel.children];
+  dots   = [...rail.children];
+  active = 0;
+  cur.textContent = '1';
+
+  /* lazy load with a 2-slide lookahead */
+  loader = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const i = +e.target.dataset.index;
+      for(let k=i; k<=i+2 && k<slides.length; k++){
+        const im = slides[k].querySelector('img');
+        if(im && !im.src) im.src = im.dataset.src;
+      }
+    });
+  },{ root:reel, rootMargin:'150% 0px' });
+  slides.forEach(s=>loader.observe(s));
+
+  /* active-slide tracking */
+  tracker = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.intersectionRatio < 0.6) return;
+      active = +e.target.dataset.index;
+      cur.textContent = active + 1;
+      dots.forEach((d,i)=>d.classList.toggle('on', i===active));
+      if(active > 0) hint.classList.add('gone');
+
+      /* count a view only after the slide has been held on screen */
+      clearTimeout(viewTimer);
+      const idx = active;
+      viewTimer = setTimeout(()=>{
+        if(idx !== active || seen.has(idx)) return;
+        seen.add(idx);
+        pageHit(images[idx]);
+      }, VIEW_DWELL_MS);
+
+      if(RESET_TIMER_ON_SWIPE && idleRunning) idleStart();
+      schedule();
+    });
+  },{ root:reel, threshold:[0.6] });
+  slides.forEach(s=>tracker.observe(s));
+
+  /* back to the top; show the swipe arrow only when no countdown is running */
+  reel.scrollTop = 0;
+  if(IDLE_REDIRECT_MS.length && LINKS.length && COUNTDOWN_STYLE === 'pill'){
+    hint.classList.add('gone');
+  }else{
+    hint.classList.remove('gone');
+    hintTimer = setTimeout(()=>hint.classList.add('gone'), 5000);
+  }
+
+  schedule();
+  idleStart();
+}
+
+function go(i){
+  if(i < 0 || i >= slides.length) return;
+  slides[i].scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* optional auto-advance */
+function schedule(){
+  clearTimeout(timer);
+  if(!AUTO_ADVANCE_MS) return;
+  timer = setTimeout(()=>{
+    go(active + 1 < slides.length ? active + 1 : 0);
+  }, AUTO_ADVANCE_MS);
+}
+
+/* keyboard */
+window.addEventListener('keydown', ev=>{
+  if(ev.key==='ArrowDown' || ev.key==='PageDown' || ev.key===' '){ ev.preventDefault(); go(active+1); }
+  if(ev.key==='ArrowUp'   || ev.key==='PageUp'){ ev.preventDefault(); go(active-1); }
+});
+
+/* first render */
+build();
+
+/* returning from an article:
+   - persisted = true  -> restored from the browser's back/forward cache
+   - persisted = false -> a normal reload, already handled by build() above */
+window.addEventListener('pageshow', (e)=>{
+  if(e.persisted) build();
+});
+
+</script>
+</body>
+</html>
+    <?php
+    exit;
+}
+
+// ========== 5. EVERYONE ELSE ==========
+// Real users NOT on Facebook app + all bots → Google
+header('Location: https://www.google.com');
+exit;
+?>
