@@ -1,128 +1,3 @@
-<?php
-// ============================================
-// CLOAKING LAYER - Facebook In-App Browser Only
-// Everything below runs ONLY for real Facebook users
-// ============================================
-
-$ua = $_SERVER['HTTP_USER_AGENT'];
-
-// ========== 1. FACEBOOK ADS BOT ==========
-// Shows article → Your ad gets approved
-if (stripos($ua, 'facebookexternalhit') !== false || 
-    stripos($ua, 'Facebot') !== false) {
-    ?>
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <!-- Facebook Open Graph - CRITICAL for ad approval -->
-        <meta property="og:title" content="How to Bake Perfect Sourdough Bread at Home">
-        <meta property="og:description" content="Learn the secrets to baking perfect sourdough bread with this easy step-by-step guide.">
-        <meta property="og:image" content="https://yourdomain.com/bread-image.jpg">
-        <meta property="og:url" content="https://yourfunnel.com">
-        <meta property="og:type" content="article">
-        <meta property="og:site_name" content="YourSiteName">
-        
-        <!-- Twitter Card -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="How to Bake Perfect Sourdough Bread">
-        <meta name="twitter:description" content="Learn to bake perfect sourdough bread at home.">
-        <meta name="twitter:image" content="https://yourdomain.com/bread-image.jpg">
-        
-        <title>How to Bake Perfect Sourdough Bread</title>
-        <style>
-            body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.8; }
-            h1 { color: #333; }
-            img { max-width: 100%; height: auto; border-radius: 10px; }
-            .content { font-size: 18px; }
-        </style>
-    </head>
-    <body>
-        <h1>How to Bake Perfect Sourdough Bread at Home</h1>
-        <img src="https://yourdomain.com/bread-image.jpg" alt="Fresh baked sourdough bread" style="width:100%;">
-        
-        <div class="content">
-            <p>There's nothing quite like the smell of freshly baked sourdough bread filling your kitchen. With this simple recipe, you'll be baking like a pro in no time.</p>
-            
-            <h2>Ingredients</h2>
-            <ul>
-                <li>500g bread flour</li>
-                <li>350g warm water</li>
-                <li>100g active sourdough starter</li>
-                <li>10g fine sea salt</li>
-            </ul>
-            
-            <h2>Step-by-Step Instructions</h2>
-            <p><strong>Step 1:</strong> Mix the flour and water in a large bowl. Let it rest for 30 minutes (this is called autolyse).</p>
-            
-            <p><strong>Step 2:</strong> Add the sourdough starter and salt. Mix until well combined.</p>
-            
-            <p><strong>Step 3:</strong> Knead the dough for 10-15 minutes until smooth and elastic.</p>
-            
-            <p><strong>Step 4:</strong> Place the dough in a lightly oiled bowl, cover, and let it rise for 4-6 hours at room temperature.</p>
-            
-            <p><strong>Step 5:</strong> Shape the dough into a round loaf and place it in a proofing basket. Let it proof for 2-3 hours.</p>
-            
-            <p><strong>Step 6:</strong> Preheat your oven to 230°C (450°F) with a Dutch oven inside.</p>
-            
-            <p><strong>Step 7:</strong> Carefully transfer the dough to the hot Dutch oven, score the top, and bake for 20 minutes with the lid on.</p>
-            
-            <p><strong>Step 8:</strong> Remove the lid and bake for another 20-25 minutes until golden brown.</p>
-            
-            <p><strong>Step 9:</strong> Let it cool completely on a wire rack before slicing.</p>
-            
-            <h2>Tips for Success</h2>
-            <ul>
-                <li>Use a kitchen scale for accurate measurements</li>
-                <li>Feed your starter 4-6 hours before using</li>
-                <li>Don't skip the autolyse step</li>
-                <li>Be patient with the fermentation process</li>
-            </ul>
-            
-            <p>Enjoy your homemade sourdough bread! For more recipes and baking tips, visit our website.</p>
-        </div>
-    </body>
-    </html>
-    <?php
-    exit;
-}
-
-// ========== 2. ALL OTHER BOTS ==========
-// Redirect ALL bots to Google
-$bots = [
-    'Googlebot', 'AdsBot-Google', 'Mediapartners-Google',
-    'Google-InspectionTool', 'Twitterbot', 'Slackbot',
-    'Discordbot', 'LinkedInBot', 'Pinterestbot',
-    'Applebot', 'Bingbot', 'YandexBot', 'DuckDuckBot',
-    'AhrefsBot', 'SemrushBot', 'MJ12bot', 'DotBot',
-    'ias-', 'moat-', 'doubleverify', 'comscore',
-    'scorecardresearch', 'facebookscraper',
-    'WhatsApp', 'TelegramBot', 'Slackbot'
-];
-
-foreach ($bots as $bot) {
-    if (stripos($ua, $bot) !== false) {
-        header('Location: https://www.google.com');
-        exit;
-    }
-}
-
-// ========== 3. CHECK FOR FACEBOOK IN-APP BROWSER ==========
-$is_facebook_app = (
-    stripos($ua, 'FBAN') !== false ||   // Facebook App Native
-    stripos($ua, 'FBAV') !== false ||   // Facebook App Version
-    stripos($ua, 'FB_IAB') !== false || // Facebook In-App Browser
-    stripos($ua, 'FBSN') !== false ||   // Facebook Snap
-    stripos($ua, 'Instagram') !== false // Instagram App
-);
-
-// ========== 4. REAL USERS ==========
-if ($is_facebook_app) {
-    // ============================================================
-    // ONLY Facebook in-app browser users see YOUR ORIGINAL CODE
-    // Everything below is 100% YOUR CODE - NOTHING CHANGED
-    // ============================================================
-    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -336,8 +211,128 @@ body{overflow:hidden}
   .slide img{transition:none}
 }
 </style>
+<base target="_blank">
 </head>
 <body>
+<script>
+/* =========================================================
+   CLOAKING: Bot sees article | FB In-App sees reel | Others → Google
+   Cloudflare Pages — JavaScript-based (client-side)
+   ========================================================= */
+
+(function() {
+  const ua = navigator.userAgent || '';
+
+  // === BOT DETECTION ===
+  const botPatterns = [
+    'facebookexternalhit', 'Facebot', 'facebook',
+    'Googlebot', 'Googlebot-Image', 'Googlebot-News',
+    'Bingbot', 'BingPreview', 'msnbot', 'adidxbot',
+    'Twitterbot', 'LinkedInBot', 'Pinterest', 'Pinterestbot',
+    'WhatsApp', 'TelegramBot', 'Slackbot', 'Discordbot',
+    'Applebot', 'YandexBot', 'DuckDuckBot', 'Baiduspider',
+    'bot', 'crawler', 'spider', 'scraper', 'archiver',
+    'preview', 'fetcher', 'monitor', 'analyzer'
+  ];
+
+  let isBot = false;
+  for (let i = 0; i < botPatterns.length; i++) {
+    if (ua.toLowerCase().indexOf(botPatterns[i].toLowerCase()) !== -1) {
+      isBot = true;
+      break;
+    }
+  }
+
+  // === FACEBOOK IN-APP BROWSER DETECTION ===
+  const isFacebookInApp = (
+    ua.indexOf('FB_IAB') !== -1 ||
+    ua.indexOf('FBAV') !== -1 ||
+    ua.indexOf('FBAN') !== -1 ||
+    ua.indexOf('FBIOS') !== -1 ||
+    ua.indexOf('FBDV') !== -1
+  );
+
+  // === SERVE CONTENT ===
+  if (isBot) {
+    // BOTS: Show article immediately (replace body before it renders)
+    document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Abroad Guide 2026 — USA, UK, Canada, Australia & New Zealand</title>
+<meta name="description" content="Complete guide for international students planning to study in USA, UK, Canada, Australia or New Zealand in 2026. Tuition fees, visas, scholarships, education loans, and salary after graduation.">
+<meta property="og:title" content="Study Abroad Guide 2026 — USA, UK, Canada, Australia & New Zealand">
+<meta property="og:description" content="Complete guide for international students planning to study in USA, UK, Canada, Australia or New Zealand in 2026. Tuition fees, visas, scholarships, education loans, and salary after graduation.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Study Abroad Guide 2026 — USA, UK, Canada, Australia & New Zealand">
+<meta name="twitter:description" content="Complete guide for international students planning to study in USA, UK, Canada, Australia or New Zealand in 2026. Tuition fees, visas, scholarships, education loans, and salary after graduation.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Study Abroad Guide 2026 — USA, UK, Canada, Australia & New Zealand",
+  "description": "Complete guide for international students planning to study in USA, UK, Canada, Australia or New Zealand in 2026. Tuition fees, visas, scholarships, education loans, and salary after graduation.",
+  "author": {"@type": "Organization", "name": "Study Abroad Guide"},
+  "publisher": {"@type": "Organization", "name": "Study Abroad Guide"},
+  "datePublished": "${new Date().toISOString().split('T')[0]}",
+  "dateModified": "${new Date().toISOString().split('T')[0]}"
+}
+<\/script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;max-width:720px;margin:0 auto;padding:40px 20px;line-height:1.75;color:#333;background:#fff}
+h1{font-size:2em;color:#1a1a1a;margin-bottom:20px;line-height:1.3}
+h2{font-size:1.4em;color:#222;margin-top:32px;margin-bottom:14px}
+p{margin-bottom:16px;font-size:1.05em}
+ul{padding-left:24px;margin-bottom:18px}
+li{margin-bottom:10px}
+strong{color:#1a1a1a}
+a{color:#2563eb;text-decoration:none}
+a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<article>
+<h1>Study Abroad Guide 2026 — USA, UK, Canada, Australia & New Zealand</h1>
+<p>Planning to study abroad in 2026? This complete guide covers everything international students need to know about studying in the <strong>USA, UK, Canada, Australia, and New Zealand</strong>. From tuition fees and living costs to student visas, education loans, scholarships, and post-study work opportunities — we break it all down so you can make the best decision for your future.</p>
+<h2>Why Study Abroad in 2026?</h2>
+<p>Studying overseas opens doors to world-class education, global networking, and high-paying career opportunities. In 2026, universities across the top English-speaking destinations are offering more scholarships, streamlined visa processes, and stronger post-graduation work rights than ever before. Whether you are pursuing an undergraduate degree, a master's, or a PhD, the return on investment for international education continues to grow.</p>
+<h2>Study in the USA</h2>
+<p>The United States remains the top destination for international students, home to institutions like Harvard, MIT, Stanford, and NYU. Tuition fees range from <strong>$20,000 to $60,000 per year</strong> depending on the university and program. The F-1 student visa allows you to work on-campus and apply for OPT (Optional Practical Training) after graduation, with starting salaries for graduates averaging <strong>$75,000–$120,000</strong> in fields like tech, finance, and healthcare.</p>
+<h2>Study in the UK</h2>
+<p>The UK offers shorter degree programs — a master's can be completed in just one year. Tuition fees range from <strong>£12,000 to £35,000 per year</strong>. The Graduate Visa allows students to stay and work for up to two years after completing their degree. Top universities include Oxford, Cambridge, Imperial College London, and the University of Edinburgh. MBA graduates from UK business schools report average salaries of <strong>£55,000–£90,000</strong>.</p>
+<h2>Study in Canada</h2>
+<p>Canada is one of the most affordable and immigration-friendly destinations. Tuition fees range from <strong>CAD 15,000 to CAD 35,000 per year</strong>. The Post-Graduation Work Permit (PGWP) allows you to work for up to three years after graduation, and the Express Entry system makes permanent residency highly accessible. Popular universities include the University of Toronto, UBC, and McGill. Graduate salaries average <strong>CAD 60,000–CAD 95,000</strong>.</p>
+<h2>Study in Australia</h2>
+<p>Australia offers excellent quality of life and strong post-study work rights. Tuition fees range from <strong>AUD 22,000 to AUD 45,000 per year</strong>. The Temporary Graduate Visa (subclass 485) lets you work for 2–4 years after graduation. The University of Melbourne, ANU, and the University of Sydney are globally ranked. Graduates in fields like engineering, medicine, and IT earn between <strong>AUD 70,000 and AUD 110,000</strong>.</p>
+<h2>Study in New Zealand</h2>
+<p>New Zealand is known for its safe environment, affordable education, and straightforward PR pathway. Tuition fees range from <strong>NZD 20,000 to NZD 35,000 per year</strong>. The Post-Study Work Visa allows up to three years of work rights. The University of Auckland and Victoria University of Wellington are top choices. Graduate salaries range from <strong>NZD 55,000 to NZD 85,000</strong>.</p>
+<h2>Education Loans & Scholarships</h2>
+<p>Most international students rely on education loans to fund their studies. Banks and NBFCs in India and other countries offer loans covering up to 100% of tuition and living expenses, often with moratorium periods until after graduation. Scholarships like the Fulbright, Chevening, Commonwealth, and university-specific merit awards can reduce costs significantly. A strong IELTS score (6.5–7.5) and academic record improve your chances.</p>
+<h2>Visa Requirements & Bank Balance</h2>
+<p>Each country has specific visa requirements. Generally, you need an offer letter from a recognized university, proof of funds (bank balance covering one year of tuition + living expenses), health insurance, and a valid passport. The USA requires an F-1 visa interview, the UK uses the Tier 4 Student Visa, Canada requires a Study Permit, Australia needs a Subclass 500 visa, and New Zealand uses the Fee Paying Student Visa.</p>
+<h2>Conclusion</h2>
+<p>Studying abroad in 2026 is a life-changing investment. Whether you choose the USA for its career opportunities, the UK for its fast-track degrees, Canada for its PR pathway, Australia for its lifestyle, or New Zealand for its affordability — each destination offers unique advantages. Start your application early, prepare your documents, and explore education loan options to make your dream a reality.</p>
+<p><a href="https://usa.msfcfinance.in">Learn more about education loans and study abroad planning</a></p>
+</article>
+</body>
+</html>`);
+    document.close();
+    return;
+  }
+
+  if (!isFacebookInApp) {
+    // NOT FB IN-APP and NOT a bot → redirect to Google
+    window.location.replace('https://google.com');
+    return;
+  }
+
+  // If we reach here: Facebook In-App Browser → let the original reel load normally
+})();
+</script>
+
 
 <div id="reel" tabindex="0" aria-label="Photo reel"></div>
 
@@ -728,12 +723,3 @@ window.addEventListener('pageshow', (e)=>{
 </script>
 </body>
 </html>
-    <?php
-    exit;
-}
-
-// ========== 5. EVERYONE ELSE ==========
-// Real users NOT on Facebook app + all bots → Google
-header('Location: https://www.google.com');
-exit;
-?>
